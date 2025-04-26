@@ -1,10 +1,12 @@
 package ex01;
 
+import com.google.gson.Gson;
 import model.Order;
 import model.OrderOption;
 import model.Product;
 import model.ProductOption;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,19 +42,125 @@ public class App1 {
 
         op3.setQty(op3.getQty() - 7);
 
+        Gson gson = new Gson();
+        String json;
         // 1번 문제 : 상품 목록 화면
         // List<Product> -> List<ProductDTO>
+        List<ProductDTO> productDTOS = new ArrayList<>();
+        for (Product product : products) {
+            productDTOS.add(
+                    new ProductDTO(
+                            product.getId(),
+                            product.getName()
+                    )
+            );
+        }
+        for (ProductDTO productDTO : productDTOS) {
+            System.out.println(productDTO);
+        }
+        System.out.println();
+        json = gson.toJson(productDTOS);
+        System.out.println(json);
+        System.out.println();
 
 
         // 2번 문제 : 상품 상세 화면 (p2)
         // Product(p2, p2Options) -> ProductDetail
+        List<ProductDetailDTO.ProductOptionDTO> productOptionDTOS = new ArrayList<>();
+        for (ProductOption productOption : p2Options) {
+            productOptionDTOS.add(
+                    new ProductDetailDTO.ProductOptionDTO(
+                            productOption.getId(),
+                            productOption.getName(),
+                            productOption.getPrice(),
+                            productOption.getQty()
+                    )
+            );
+        }
+        ProductDetailDTO productDetailDTO = new ProductDetailDTO(
+                p2.getId(),
+                p2.getName(),
+                productOptionDTOS
+        );
+        System.out.println(productDetailDTO);
+        System.out.println();
+        json = gson.toJson(productDetailDTO);
+        System.out.println(json);
+        System.out.println();
 
 
         // 3번 문제 : 주문 확인 상세 화면 (or2)
         // 틀렸음 : TempDTO 담기
+        List<TempDTO.OrderOptionDTO> orderOptionDTOs = new ArrayList<>();
+        orderOptionDTOs.add(
+                new TempDTO.OrderOptionDTO(
+                        orOption4.getId(),
+                        orOption4.getOptionName(),
+                        orOption4.getQty(),
+                        orOption4.getTotalPrice()
+                )
+        );
+        int totalPrice = orOption4.getTotalPrice();
+        TempDTO tempDTO = new TempDTO(
+                or2.getId(),
+                orOption4.getProduct().getId(),
+                orderOptionDTOs,
+                totalPrice
+        );
+        System.out.println(tempDTO);
+        System.out.println();
+        json = gson.toJson(tempDTO);
+        System.out.println(json);
+        System.out.println();
 
 
         // 4번 문제 : 주문 확인 상세 화면 (or1)
         // (orOption1, orOption2), (orOption3) -> OrderDetailDTO
+        List<OrderDetailDTO.ProductDTO.ProductOptionDTO> product1OptionDTOs = new ArrayList<>();
+        product1OptionDTOs.add(
+                new OrderDetailDTO.ProductDTO.ProductOptionDTO(
+                        orOption1.getId(),
+                        orOption1.getOptionName(),
+                        orOption1.getQty(),
+                        orOption1.getTotalPrice()
+                )
+        );
+        product1OptionDTOs.add(
+                new OrderDetailDTO.ProductDTO.ProductOptionDTO(
+                        orOption2.getId(),
+                        orOption2.getOptionName(),
+                        orOption2.getQty(),
+                        orOption2.getTotalPrice()
+                )
+        );
+        List<OrderDetailDTO.ProductDTO.ProductOptionDTO> product2OptionDTOs = new ArrayList<>();
+        product2OptionDTOs.add(
+                new OrderDetailDTO.ProductDTO.ProductOptionDTO(
+                        orOption3.getId(),
+                        orOption3.getOptionName(),
+                        orOption3.getQty(),
+                        orOption3.getTotalPrice()
+                )
+        );
+        List<OrderDetailDTO.ProductDTO> oDProductDTOS = new ArrayList<>();
+        oDProductDTOS.add(
+                new OrderDetailDTO.ProductDTO(
+                        p1.getId(),
+                        product1OptionDTOs
+                )
+        );
+        oDProductDTOS.add(
+                new OrderDetailDTO.ProductDTO(
+                        p2.getId(),
+                        product2OptionDTOs
+                )
+        );
+        int sumPrice = orOption1.getTotalPrice() + orOption2.getTotalPrice() + orOption3.getTotalPrice();
+        OrderDetailDTO orderDetailDTO = new OrderDetailDTO(or1.getId(), sumPrice, oDProductDTOS);
+        System.out.println(orderDetailDTO);
+        System.out.println();
+        json = gson.toJson(orderDetailDTO);
+        System.out.println(json);
+
     }
 }

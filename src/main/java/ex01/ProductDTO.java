@@ -1,6 +1,7 @@
 package ex01;
 
 import lombok.Data;
+import model.Product;
 
 @Data
 public class ProductDTO {
@@ -8,10 +9,9 @@ public class ProductDTO {
     private String name;
 
     public ProductDTO(
-            int id,
-            String name
+            Product product
     ) {
-        this.id = id;
-        this.name = name;
+        this.id = product.getId();
+        this.name = product.getName();
     }
 }

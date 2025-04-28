@@ -3,45 +3,22 @@ package ex01;
 import lombok.Data;
 import model.OrderOption;
 
-import java.util.List;
-
 // 3번 문제용
 @Data
 public class TempDTO {
     private int orderId;
     private int productId;
-    private List<OrderOptionDTO> OrderOptionDTO;
+    private int orderOptionId;
+    private String orderOptionName;
+    private int orderOptionQty;
     private int totalPrice;
 
-    public TempDTO(
-            int orderId,
-            int productId,
-            List<OrderOptionDTO> orderOptionDTO,
-            int totalPrice
-    ) {
-        this.orderId = orderId;
-        this.productId = productId;
-        OrderOptionDTO = orderOptionDTO;
-        this.totalPrice = totalPrice;
-    }
-
-    @Data
-    public static class OrderOptionDTO {
-        private int id;
-        private String optionName;
-        private int qty;
-        private int totalPrice;
-
-        public OrderOptionDTO(
-                int id,
-                String optionName,
-                int qty,
-                int totalPrice
-        ) {
-            this.id = id;
-            this.optionName = optionName;
-            this.qty = qty;
-            this.totalPrice = totalPrice;
-        }
+    public TempDTO(OrderOption orderOption) {
+        this.orderId = orderOption.getOrder().getId();
+        this.productId = orderOption.getProduct().getId(); // lazy loading (조인 안하면)
+        this.orderOptionId = orderOption.getId();
+        this.orderOptionName = orderOption.getOptionName();
+        this.orderOptionQty = orderOption.getQty();
+        this.totalPrice = orderOption.getTotalPrice();
     }
 }

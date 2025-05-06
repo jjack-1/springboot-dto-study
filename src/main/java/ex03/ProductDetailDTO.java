@@ -11,14 +11,14 @@ import java.util.List;
 public class ProductDetailDTO {
     private int productId;
     private String productName;
-    private List<ProductOptionDTO> options = new ArrayList<>(); // 이름에는 DTO를 넣지 않는다
+    private List<ProductOptionDTO> options; // 이름에는 DTO를 넣지 않는다
 
     public ProductDetailDTO(Product product, List<ProductOption> options) {
         this.productId = product.getId();
         this.productName = product.getName();
-        for (ProductOption option : options) {
-            this.options.add(new ProductOptionDTO(option));
-        }
+        this.options = options.stream()
+                .map((option) -> new ProductOptionDTO(option))
+                .toList();
     }
 
     @Data

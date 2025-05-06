@@ -47,18 +47,12 @@ public class App1 {
         String json;
         // 1번 문제 : 상품 목록 화면
         // List<Product> -> List<ProductDTO>
-        List<ProductDTO> productDTOS = new ArrayList<>();
-        for (Product product : products) {
-            productDTOS.add(new ProductDTO(product));
-        }
-        for (ProductDTO productDTO : productDTOS) {
-            System.out.println(productDTO);
-        }
-        System.out.println();
-        json = gson.toJson(productDTOS);
+        var productDTOs = products.stream()
+                .map((product) -> new ProductDTO(product))
+                .toList();
+        json = gson.toJson(productDTOs);
         System.out.println(json);
         System.out.println();
-
 
         // 2번 문제 : 상품 상세 화면 (p2)
         // Product(p2, p2Options) -> ProductDetail
